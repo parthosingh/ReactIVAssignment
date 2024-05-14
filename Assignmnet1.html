@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    let rootElement = document.getElementById("root");
+
+    function TodoList(){
+      const[todos, setTodos] = React.useState([]);
+      const[newTodo, setNewTodo] = React.useState("");
+
+     function handleChange(e){
+        setNewTodo(e.target.value)
+     }
+
+     function Addtodo(){
+      setTodos( [...todos, {id: Date.now(), text:newTodo, completed: false}])
+      setNewTodo("")
+     }
+
+     function toggleTodo(id){
+        setTodos(prevValue => prevValue.map ( todo => todo.id === id ?{...todo, completed: !todo.completed}: todo))
+     }
+     console.log(todos)
+    // console.log(newTodo)
+     
+    function removeTodo(id){
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
+    }
+        return(
+            <div>
+                <input type="text" placeholder="Enter text here" value={newTodo} onChange={handleChange}/>
+                 <button onClick={Addtodo}>AddTodo</button>
+
+                 <ul>
+                 {todos.map((todo, index) => (
+                    <li key={todo.id}>
+                        <input type="checkbox" checked={todo.completed} onChange={function(){
+                            toggleTodo(todo.id)
+                        }}/>
+                    <span>{todo.text}</span>
+                    <button onClick={function(){removeTodo(todo.id)}}>Delete </button>
+                    </li>
+                 ))}
+                </ul>  
+            </div>
+        )
+    }
+    ReactDOM.createRoot(rootElement).render(<TodoList/>)
+  </script>
+</html>
