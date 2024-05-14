@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    let rootElement = document.getElementById("root");
+    function App(){
+        const[hobbies, setHobbies] = React.useState([])
+        const[newhobbies, setNewHobbies] = React.useState("");
+      function handleChange(e){
+        setNewHobbies(e.target.value)
+      }
+    function submit(){
+        setHobbies([...hobbies,{id: Date.now(), text:newhobbies}])
+        setNewHobbies("")
+    }
+
+    function removetodo(index){
+        if(index === 0) return;
+       else{
+        const updateHobbies = hobbies.filter((hobbies, i) => i !== index)
+        setHobbies(updateHobbies)
+       }
+    }
+        return(
+            <div>
+                 <input placeholder="Enter text here" type="text" value={newhobbies} onChange={handleChange}/>
+                 <button onClick={submit}>Submit</button>
+
+                 <ul>
+                  {hobbies.map((hobby, index) => (
+                    <li key={index}>
+                    <span>{hobby.text}</span>    
+                    <button onClick={function(){
+                        removetodo(index)
+                    }}>Delete </button>
+                    </li>
+                  ))}
+
+                  </ul>  
+            </div>   
+        )
+    }
+    ReactDOM.createRoot(rootElement).render(<App/>)
+  </script>
+</html>
